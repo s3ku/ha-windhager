@@ -169,9 +169,10 @@ class WindhagerPelletSensor(WindhagerBaseSensor):
 class WindhagerSelectSensor(WindhagerBaseSensor):
     """Select sensor implementation."""
 
+    _attr_translation_key = "heater_status"
+
     def __init__(self, coordinator: Any, device_info: dict) -> None:
         super().__init__(coordinator, device_info)
-        self._options = device_info.get("options")
 
     @property
     def raw_value(self) -> int | None:
@@ -179,16 +180,14 @@ class WindhagerSelectSensor(WindhagerBaseSensor):
 
     @property
     def native_value(self) -> str | None:
-        # TODO use translations to return the correct text for each language (e.g. "1" -> "Self-test"/"Autotest"...); remove the options value in client.py
         raw_value = self.raw_value
         if raw_value is None:
             return None
-        if not (0 <= raw_value < len(self._options)):
+        if raw_value < 0:
             _LOGGER.debug(
-                "Invalid status value %s for sensor %s. Must be between 0 and %d",
+                "Invalid status value %s for sensor %s",
                 raw_value,
                 self._name,
-                len(self._options) - 1,
             )
             return None
-        return self._options[raw_value]
+        return str(raw_value)
