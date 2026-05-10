@@ -37,7 +37,8 @@
           "12": "Cladding door open",
           "13": "Ignition ready",
           "14": "Cancel ignition phase",
-          "15": "Preheating in progress"
+          "15": "Preheating in progress",
+          "17": "Burnout"
         }
       }
     },
